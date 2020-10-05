@@ -1,0 +1,147 @@
+### 栈结构 出栈次序序列种类数
+
+#### 原理说明
+
+第**n**个数据 第**i**个出栈的可能序列记为**f（n，i）**
+
+f(n,1)=1
+
+f(n,n)=$\sum_{k=1}^{n-1}$ f(n-1,k)
+
+f(n,i) =$\sum_{k=1}^{i}$ f(n-1,k)
+
+Definition : F(n)= $\sum_{k=0}^{n}$ f(n,k)
+
+
+
+//测试了元素个数由2到10的栈
+
+
+
+#include <iostream>
+
+using namespace std;
+
+
+
+class AllPopSequence{
+
+private:
+
+  int size;
+
+  int result;
+
+  int times;
+
+public:
+
+  AllPopSequence(int n):size(n),result(-1),times(0){}
+
+  AllPopSequence(){size=0;result=-1;times=0;}
+
+  ~AllPopSequence(){}
+
+   
+
+  int ShowResult();
+
+  int ShowRunTimes();
+
+  void Function();
+
+  void Recursivef(int tmpsize, int order);
+
+};
+
+
+
+int main()
+
+{
+
+  for(int i=2;i<=10;++i){
+
+    AllPopSequence stack(i);
+
+    cout<<'['<<i<<']'<<endl;
+
+    cout<<"AllPopSequenceResult: "<<stack.ShowResult()<<endl;
+
+    cout<<"RunTimes: "<<stack.ShowRunTimes()<<endl<<endl;
+
+  }
+
+  return 0;
+
+}
+
+
+
+void AllPopSequence::Function(){
+
+  result=0;
+
+  for(int i=1; i<=size; ++i){
+
+    Recursivef(size,i);
+
+  }
+
+}
+
+
+
+void AllPopSequence::Recursivef(int tmpsize, int order){
+
+  ++times;
+
+  if(order==1){
+
+    ++result;
+
+    return;
+
+  }
+
+  while(tmpsize>order){
+
+    --tmpsize;
+
+    for(int i=1; i<=order; ++i){
+
+      Recursivef(tmpsize,i);
+
+    }
+
+    return;
+
+  }
+
+   
+
+  for(int i=1; i<=(order-1); ++i){
+
+    Recursivef(tmpsize-1,i);
+
+  }
+
+}
+
+
+
+int AllPopSequence::ShowResult(){
+
+  Function();
+
+  return result;
+
+}
+
+
+
+int AllPopSequence::ShowRunTimes(){
+
+  return times;
+
+}
