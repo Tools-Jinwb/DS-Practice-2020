@@ -1,0 +1,98 @@
+#ifndef NOHEADSLINKLISTIMP_H
+#define NOHEADSLINKLISTIMP_H
+#include "noHeadSLinkList.h"
+
+template <class elemType>
+int noHeadSLinkList<elemType>::length() const{
+    node *p=first;
+    int len=0;
+    for(;p!=NULL;p=p->next){
+        ++len;
+    }
+    return len;
+}
+
+template <class elemType>
+int noHeadSLinkList<elemType>::search(const elemType &x) const{
+    if (first==NULL) return -1;
+    node *p=first;
+    int pos=0;
+    while(pos<length()&&p->data!=x){
+        ++pos;
+        p=p->next;
+    }
+    
+    if(p==NULL){
+        return -1;
+    }
+    return pos;
+}//未查到返回-1
+
+template <class elemType>
+elemType noHeadSLinkList<elemType>::visit(int i) const{
+    if(i<0||i>=length()) throw IllegalParameter();
+    
+    node *member=first;
+    for(int j=0;j<i;++j){
+          member=member->next;
+    }
+    return member->data;
+}
+
+template <class elemType>
+void noHeadSLinkList<elemType>::insert(int i, const elemType &x){
+    if(i<0||i>length()) return;
+    
+    if(i==0){
+        node *p=new node(x,first);
+        first=p;
+        return;
+    }
+    
+    node *pos=first;
+    for(int j=0;j<i-1;++j){
+        pos=pos->next;
+    }
+    pos->next=new node(x,pos->next);
+    
+    return;
+}
+
+template <class elemType>
+void noHeadSLinkList<elemType>::remove(int i){
+    if(i<0||i>=length()) return;
+    
+    if(i==0){
+        node *p=first;
+        first=first->next;
+        delete p;
+        return;
+    }
+    
+    node *pos=first;
+    for(int j=0;j<i-1;++j){
+        pos=pos->next;
+    }
+    node *p=pos->next;
+    pos->next=(pos->next)->next;
+    delete p;
+    
+    return;
+}
+
+template <class elemType>
+void noHeadSLinkList<elemType>::clear(){
+    
+    node *p = first;
+    node *q;
+    
+    while(p!=NULL){
+        q=p->next;
+        delete p;
+        p=q;
+    }
+    
+    first = p;
+    
+}
+#endif
